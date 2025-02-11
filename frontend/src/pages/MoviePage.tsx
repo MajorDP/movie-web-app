@@ -2,6 +2,7 @@ import { useFetchMovie } from "../hooks/useMovie";
 import { useParams } from "react-router-dom";
 import Error from "../components/Error";
 import Spinner from "../components/Spinner";
+import StarRating from "../components/StarRating";
 
 const MoviePage = () => {
   const { id } = useParams();
@@ -49,8 +50,7 @@ const MoviePage = () => {
               ></iframe>
             </div>
 
-            <div className="mt-5"></div>
-            <div className="mt-4 grid grid-cols-2 gap-6">
+            <div className="mt-4 grid grid-cols-2 gap-5">
               <div>
                 <h3 className="text-lg font-semibold text-white">Genres</h3>
                 <ul className="text-gray-300">
@@ -78,7 +78,7 @@ const MoviePage = () => {
                 <h3 className="text-lg font-semibold text-orange-300">
                   Rating
                 </h3>
-                <p className="text-gray-300">{movie.rating} / 10</p>
+                <p className="text-gray-300">{movie.rating} / 5 Stars</p>
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-orange-300">
@@ -91,11 +91,18 @@ const MoviePage = () => {
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">Cast</h3>
-                <p className="text-gray-300">{movie.cast.join(", ")}</p>
+                <h3 className="text-lg font-semibold text-white ">Cast</h3>
+                <ul className="text-gray-300">
+                  {movie.cast.map((award: string, index: number) => (
+                    <li key={index}>{award}</li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
+        </div>
+        <div className="mt-10">
+          <StarRating currentRating={movie.rating} />
         </div>
       </div>
     )
