@@ -10,7 +10,7 @@ function SignUpForm() {
   console.log(authData);
 
   return (
-    <form className="">
+    <form className=" border px-10 py-4 rounded-xl">
       <h2 className="text-4xl text-center py-2">Sign Up</h2>
       <div className="flex flex-col w-fit m-auto text-xl mt-10">
         <div className="my-2 flex flex-col">

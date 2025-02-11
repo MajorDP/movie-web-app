@@ -46,6 +46,7 @@ function Navigation() {
               ? "transform translate-y-[-4rem]"
               : "transform -translate-y-[20rem]"
           }`}
+          onClick={() => setIsOpen(false)}
         >
           <li className="py-4 text-center hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
             <Link to="/">Home</Link>

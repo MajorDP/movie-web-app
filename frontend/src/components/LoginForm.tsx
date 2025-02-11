@@ -7,7 +7,7 @@ function LoginForm() {
     password: "",
   });
   return (
-    <form>
+    <form className=" border px-10 py-4 rounded-xl">
       <h2 className="text-4xl text-center py-2">Sign In</h2>
       <div className="flex flex-col w-fit m-auto text-xl mt-10">
         <div className="my-2 flex flex-col">
