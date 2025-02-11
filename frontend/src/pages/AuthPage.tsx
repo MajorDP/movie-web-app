@@ -5,7 +5,7 @@ import SignUpForm from "../components/SignUpForm";
 function AuthPage() {
   const [isSignIn, setIsSignIn] = useState(true);
   return (
-    <div className="m-auto my-16 bg-gray-800 w-fit md:w-[50%] rounded-xl p-5 flex flex-col items-center">
+    <div className="m-auto my-16 bg-gray-800 w-fit md:w-[40%] rounded-xl p-5 flex flex-col items-center">
       {isSignIn ? <LoginForm /> : <SignUpForm />}
       {isSignIn ? (
         <button

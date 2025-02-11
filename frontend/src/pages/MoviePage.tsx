@@ -50,7 +50,7 @@ const MoviePage = () => {
               ></iframe>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-5">
+            <div className="mt-4 grid grid-cols-2 gap-5 p-4 bg-[rgba(0,0,0,0.5)]">
               <div>
                 <h3 className="text-lg font-semibold text-white">Genres</h3>
                 <ul className="text-gray-300">
