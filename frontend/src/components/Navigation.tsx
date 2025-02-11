@@ -18,7 +18,7 @@ function Navigation() {
 
         <button
           onClick={toggleMenu}
-          className="md:hidden flex flex-col justify-center items-center space-y-2 z-10"
+          className="md:hidden flex flex-col justify-center items-center space-y-2 z-20"
         >
           <div className="w-8 h-1 bg-white"></div>
           <div className="w-8 h-1 bg-white"></div>
@@ -30,15 +30,15 @@ function Navigation() {
             <Link to="/">Home</Link>
           </li>
           <li className="hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
-            <Link to="/">Movies</Link>
+            <Link to="/movies">Movies</Link>
           </li>
           <li className="hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
-            <Link to="/">Watchlist</Link>
+            <Link to="/watchlist">Watchlist</Link>
           </li>
         </ul>
 
         <ul
-          className={`md:hidden w-full bg-black shadow-2xl absolute top-16 left-0 transition-transform duration-300 ease-in-out text-lg ${
+          className={`md:hidden w-full bg-black z-10 shadow-2xl absolute top-16 left-0 transition-transform duration-300 ease-in-out text-lg ${
             isOpen
               ? "transform translate-y-[-4rem]"
               : "transform -translate-y-[20rem]"
@@ -48,10 +48,10 @@ function Navigation() {
             <Link to="/">Home</Link>
           </li>
           <li className="py-4 text-center hover:scale-105 duration-300 ease-in-out hover:text-blue-300 z-50">
-            <Link to="/">Movies</Link>
+            <Link to="/movies">Movies</Link>
           </li>
           <li className="py-4 text-center hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
-            <Link to="/">Watchlist</Link>
+            <Link to="/watchlist">Watchlist</Link>
           </li>
         </ul>
       </nav>

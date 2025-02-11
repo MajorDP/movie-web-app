@@ -2,10 +2,11 @@
 @import "tailwindcss";
 body {
   font-family: "Poppins";
-  background: url("./assets//bgImg.jpg");
+  background: url("./assets/bgImg.jpg");
   background-size: cover;
   background-color: black;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   color: white;
 }
 

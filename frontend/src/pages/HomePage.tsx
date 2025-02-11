@@ -1,5 +1,11 @@
+import FeaturedMovies from "../components/FeaturedMovies";
+
 function HomePage() {
-  return <div>HOME</div>;
+  return (
+    <>
+      <FeaturedMovies />
+    </>
+  );
 }
 
 export default HomePage;

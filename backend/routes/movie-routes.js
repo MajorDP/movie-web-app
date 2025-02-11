@@ -1,0 +1,11 @@
+const express = require("express");
+const movieControllers = require("../controllers/movie-controllers");
+
+const router = express.Router();
+
+router.get("/featured", movieControllers.getFeaturedMovies);
+
+router.get("/", movieControllers.getMovies);
+router.get("/movie/:id", movieControllers.getMovie);
+
+module.exports = router;
