@@ -35,6 +35,9 @@ function Navigation() {
           <li className="hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
             <Link to="/watchlist">Watchlist</Link>
           </li>
+          <li className="hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
+            <Link to="/auth">Sign Up/In</Link>
+          </li>
         </ul>
 
         <ul
@@ -52,6 +55,9 @@ function Navigation() {
           </li>
           <li className="py-4 text-center hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
             <Link to="/watchlist">Watchlist</Link>
+          </li>
+          <li className="py-4 text-center hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
+            <Link to="/auth">Sign Up/in</Link>
           </li>
         </ul>
       </nav>

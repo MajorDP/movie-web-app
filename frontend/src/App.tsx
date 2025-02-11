@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import Navigation from "./components/Navigation";
 import MoviesPage from "./pages/MoviesPage";
 import MoviePage from "./pages/MoviePage";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/movies" element={<MoviesPage />} />
         <Route path="/movies/:id" element={<MoviePage />} />
+        <Route path="/auth" element={<AuthPage />} />
       </Routes>
     </BrowserRouter>
   );
