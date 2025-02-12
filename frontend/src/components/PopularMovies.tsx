@@ -25,7 +25,9 @@ function PopularMovies() {
   return (
     movies && (
       <div className="px-6 bg-gray-900">
-        <h2 className="text-2xl font-bold mb-4 text-center">🔥 Trending Now</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">
+          🔥 Trending Now 🔥
+        </h2>
         <ul className="flex flex-wrap md:flex-nowrap overflow-x-auto gap-4 justify-center">
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} size="big" />

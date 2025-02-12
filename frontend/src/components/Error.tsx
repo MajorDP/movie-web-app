@@ -8,7 +8,7 @@ interface IError {
 export const Error = ({ message, showReturnBtn }: IError) => {
   return (
     <div className="flex flex-col items-center justify-center h-[20rem]">
-      <p className="text-red-400 font-semibold text-xl">{message}</p>{" "}
+      <p className="text-red-300 font-semibold text-xl">{message}</p>{" "}
       {showReturnBtn && (
         <Link
           to="/"

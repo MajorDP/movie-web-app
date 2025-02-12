@@ -74,17 +74,15 @@ const movies = [
 
 const getFeaturedMovies = (req, res, next) => {
   res.json(movies.slice(0, 3));
-  console.log(1);
 };
 
 const getMovies = (req, res, next) => {
   res.json(movies);
-  console.log(12);
 };
 
 const getMovie = (req, res, next) => {
   const id = req.params.id;
-  console.log(id);
+
   const movie = movies.find((movie) => movie.id === id);
   if (!movie) {
     return next(new HttpError("Movie could not be could.", 404));
@@ -94,8 +92,6 @@ const getMovie = (req, res, next) => {
 };
 
 const getPopularMovies = (req, res, next) => {
-  const id = req.params.id;
-  console.log(id);
   const sortedMovies = movies.sort((a, b) => b.rating - a.rating).slice(0, 3);
   if (!sortedMovies) {
     return next(new HttpError("Movie could not be could.", 404));
@@ -104,7 +100,39 @@ const getPopularMovies = (req, res, next) => {
   res.json(sortedMovies);
 };
 
+const getFilteredMovies = (req, res, next) => {
+  const searchValue = req.query.val1 || "";
+  const sortValue = req.query.val2 || "";
+
+  const [type, value] = sortValue.split("-");
+  const filteredMovies =
+    searchValue !== ""
+      ? movies.filter((movie) =>
+          movie.title.toLowerCase().includes(searchValue.toLowerCase())
+        )
+      : movies;
+
+  const sortedMovies =
+    sortValue !== "" && type && value
+      ? filteredMovies.sort((a, b) => {
+          if (type === "awards") {
+            return value === "asc"
+              ? a.awards.length - b.awards.length
+              : b.awards.length - a.awards.length;
+          }
+          if (value === "asc") {
+            return a[type] - b[type];
+          } else {
+            return b[type] - a[type];
+          }
+        })
+      : filteredMovies;
+
+  res.json(sortedMovies);
+};
+
 exports.getFeaturedMovies = getFeaturedMovies;
 exports.getMovies = getMovies;
 exports.getMovie = getMovie;
 exports.getPopularMovies = getPopularMovies;
+exports.getFilteredMovies = getFilteredMovies;
