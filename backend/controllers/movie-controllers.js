@@ -76,10 +76,6 @@ const getFeaturedMovies = (req, res, next) => {
   res.json(movies.slice(0, 3));
 };
 
-const getMovies = (req, res, next) => {
-  res.json(movies);
-};
-
 const getMovie = (req, res, next) => {
   const id = req.params.id;
 
@@ -100,7 +96,7 @@ const getPopularMovies = (req, res, next) => {
   res.json(sortedMovies);
 };
 
-const getFilteredMovies = (req, res, next) => {
+const getMovies = (req, res, next) => {
   const searchValue = req.query.val1 || "";
   const sortValue = req.query.val2 || "";
 
@@ -135,4 +131,3 @@ exports.getFeaturedMovies = getFeaturedMovies;
 exports.getMovies = getMovies;
 exports.getMovie = getMovie;
 exports.getPopularMovies = getPopularMovies;
-exports.getFilteredMovies = getFilteredMovies;
