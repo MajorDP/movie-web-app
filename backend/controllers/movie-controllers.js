@@ -93,6 +93,18 @@ const getMovie = (req, res, next) => {
   res.json(movie);
 };
 
+const getPopularMovies = (req, res, next) => {
+  const id = req.params.id;
+  console.log(id);
+  const sortedMovies = movies.sort((a, b) => b.rating - a.rating).slice(0, 3);
+  if (!sortedMovies) {
+    return next(new HttpError("Movie could not be could.", 404));
+  }
+
+  res.json(sortedMovies);
+};
+
 exports.getFeaturedMovies = getFeaturedMovies;
 exports.getMovies = getMovies;
 exports.getMovie = getMovie;
+exports.getPopularMovies = getPopularMovies;

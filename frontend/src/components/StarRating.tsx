@@ -44,10 +44,10 @@ const StarRating = ({ currentRating }: IStarRating) => {
         className="mt-1 bg-white rounded-xl text-black p-2 w-[80%] m-auto"
       />
       <button
-        className="disabled:bg-gray-500 disabled:hover:bg-gray-500 disabled:hover:scale-100 disabled:border-0 disabled:text-black block w-fit m-auto mt-5 px-4 py-2 bg-amber-500 border hover:bg-green-600 text-black hover:text-white hover:scale-105 duration-300 rounded-xl cursor-pointer"
+        className="disabled:cursor-default disabled:bg-gray-500 disabled:hover:bg-gray-500 disabled:hover:scale-100 disabled:border-0 disabled:text-black block w-fit m-auto mt-5 px-4 py-2 bg-amber-500 border hover:bg-green-600 text-black hover:text-white hover:scale-105 duration-300 rounded-xl cursor-pointer"
         disabled={!rating.hasVoted || value === ""}
       >
-        Submit Rating
+        Submit Review
       </button>
     </div>
   );

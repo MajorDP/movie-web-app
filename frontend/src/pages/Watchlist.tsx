@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import IMovie from "../interfaces/movies";
 import Spinner from "../components/Spinner";
 import MovieCard from "../components/MovieCard";
 
-const MoviesPage = () => {
+function Watchlist() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [movies, setMovies] = useState<IMovie[] | null>(null);
@@ -24,21 +24,18 @@ const MoviesPage = () => {
   }
 
   return (
-    movies && (
-      <section id="movies" className="py-16 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            Browse Movies
-          </h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {movies.map((movie, index) => (
-              <MovieCard movie={movie} key={index} size="big" />
-            ))}
-          </ul>
-        </div>
-      </section>
-    )
-  );
-};
+    <div className="mx-auto py-16 px-4 max-w-[90%] lg:max-w-[80%]">
+      <h2 className="text-3xl font-bold text-center mb-12">Your Watchlist</h2>
 
-export default MoviesPage;
+      {movies && (
+        <ul className="flex flex-wrap flex-row justify-center gap-8">
+          {movies.map((movie, index) => (
+            <MovieCard movie={movie} key={index} size="small" />
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export default Watchlist;
