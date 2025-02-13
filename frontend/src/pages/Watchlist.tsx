@@ -10,7 +10,7 @@ function Watchlist() {
 
   useEffect(() => {
     const getFeaturedMovies = async () => {
-      const res = await fetch("http://localhost:5000/movies/");
+      const res = await fetch("http://localhost:5000/movies/filter");
       const data = await res.json();
       console.log(data);
       setMovies(data);

@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/userContext";
 
 function Navigation() {
+  const { user, logout } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(true);
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -32,12 +34,22 @@ function Navigation() {
           <li className="hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
             <Link to="/movies">Movies</Link>
           </li>
-          <li className="hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
-            <Link to="/watchlist">Watchlist</Link>
-          </li>
-          <li className="hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
-            <Link to="/auth">Sign Up/In</Link>
-          </li>
+          {user.isLoggedIn ? (
+            <>
+              <li className="hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
+                <Link to="/watchlist">Watchlist</Link>
+              </li>
+              <li className="hover:scale-105 duration-300 ease-in-out hover:text-blue-300 cursor-pointer">
+                <button onClick={logout} className="cursor-pointer">
+                  Sign Out
+                </button>
+              </li>
+            </>
+          ) : (
+            <li className="hover:scale-105 duration-300 ease-in-out hover:text-blue-300">
+              <Link to="/auth">Sign Up/In</Link>
+            </li>
+          )}
         </ul>
 
         <ul

@@ -12,6 +12,7 @@ function FeaturedMovies() {
     const getFeaturedMovies = async () => {
       const res = await fetch("http://localhost:5000/movies/featured");
       const data = await res.json();
+
       console.log(data);
       setMovies(data);
       setIsLoading(false);
@@ -55,7 +56,7 @@ function FeaturedMovies() {
             {"<"}
           </button>
 
-          <div className="flex flex-col justify-start w-full lg:w-[70%] xl:w-[50%] px-4 md:px-8 bg-[rgba(0,0,0,0.45)] rounded-full p-2 z-10 shadow-2xl">
+          <div className="flex flex-col justify-start w-full lg:w-[70%] xl:w-[50%] px-4 md:px-8 bg-[rgba(0,0,0,0.7)] rounded-full p-2 z-10 shadow-2xl">
             <p className="z-10 text-sm sm:text-base xl:text-xl mb-2">
               <span className="font-semibold">Featured: </span>
               <span>{movies[currentIndex].title}</span>

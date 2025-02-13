@@ -12,7 +12,7 @@ function PopularMovies() {
     const getFeaturedMovies = async () => {
       const res = await fetch("http://localhost:5000/movies/popular");
       const data = await res.json();
-      console.log(data);
+
       setMovies(data);
       setIsLoading(false);
     };

@@ -2,12 +2,14 @@ const express = require("express");
 const cors = require("cors");
 
 const moviesRouter = require("./routes/movie-routes");
+const usersRouter = require("./routes/users-routes");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/movies", moviesRouter);
+app.use("/auth", usersRouter);
 
 app.use((error, req, res, next) => {
   if (res.headerSent) {
