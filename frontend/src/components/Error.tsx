@@ -3,18 +3,27 @@ import { Link } from "react-router-dom";
 interface IError {
   message: string;
   showReturnBtn?: boolean;
+  returnBtnMessage?: string;
+  returnBtnLink?: string;
 }
 
-export const Error = ({ message, showReturnBtn }: IError) => {
+export const Error = ({
+  message,
+  showReturnBtn,
+  returnBtnMessage,
+  returnBtnLink,
+}: IError) => {
   return (
     <div className="flex flex-col items-center justify-center">
-      <p className="text-red-300 font-semibold text-xl">{message}</p>{" "}
+      <p className="text-red-300 font-semibold text-lg sm:text-2xl">
+        {message}
+      </p>{" "}
       {showReturnBtn && (
         <Link
-          to="/"
-          className="hover:scale-105 hover:text-green-400 duration-300"
+          to={returnBtnLink || "/"}
+          className="text-sm md:text-lg hover:scale-105 hover:text-blue-200 duration-300 underline"
         >
-          Back To Home{" "}
+          {returnBtnMessage || "Back To Home"}
         </Link>
       )}
     </div>

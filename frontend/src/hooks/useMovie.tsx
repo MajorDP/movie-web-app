@@ -28,7 +28,7 @@ export const useFetchMovie = (id: string) => {
       }
     };
     getMovieById();
-  }, []);
+  }, [id]);
 
   return movieData;
 };

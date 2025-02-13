@@ -23,22 +23,6 @@ const movies = [
     awards: ["Oscar", "Golden Globe", "Screen Actors Guild Award"],
   },
   {
-    id: "2",
-    title: "Deadpool 3",
-    description:
-      "Deadpool teams up with Wolverine and other mutants to face a new threat in this action-packed, fourth-wall-breaking adventure.",
-    img: "https://m.media-amazon.com/images/M/MV5BZTk5ODY0MmQtMzA3Ni00NGY1LThiYzItZThiNjFiNDM4MTM3XkEyXkFqcGc@._V1_.jpg",
-    trailer: "https://www.youtube.com/watch?v=73_1biulkYk",
-    releaseDate: "2024-11-10",
-    genres: ["Action", "Adventure", "Sci-Fi"],
-    duration: 120,
-    rating: 4,
-    director: "Shawn Levy",
-    cast: ["Ryan Reynolds", "Hugh Jackman", "Morena Baccarin", "Emma Corrin"],
-    language: "English",
-    awards: ["MTV Movie Awards", "Golden Globe (nominated)"],
-  },
-  {
     id: "3",
     title: "Deadpool 3",
     description:

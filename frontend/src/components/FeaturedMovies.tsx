@@ -13,7 +13,6 @@ function FeaturedMovies() {
       const res = await fetch("http://localhost:5000/movies/featured");
       const data = await res.json();
 
-      console.log(data);
       setMovies(data);
       setIsLoading(false);
     };

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import IMovie from "../interfaces/movies";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ConfirmationModal from "./ConfirmationModal";
+import { AuthContext } from "../context/userContext";
 
 interface IMovieCard {
   movie: IMovie;
@@ -9,8 +10,14 @@ interface IMovieCard {
 }
 
 function MovieCard({ movie, size }: IMovieCard) {
+  const { user, removeMovieFromSaved, addMovieToSaved } =
+    useContext(AuthContext);
   const isSmall = size === "small";
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const isSaved = user.savedMovies.find(
+    (savedMovie) => savedMovie.id === movie.id
+  );
 
   return (
     <>
@@ -19,7 +26,9 @@ function MovieCard({ movie, size }: IMovieCard) {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onConfirm={() => {
-            console.log("yes");
+            if (user.id) {
+              removeMovieFromSaved(movie.id, user.id);
+            }
             setIsModalOpen(false);
           }}
           message={`Do you want to remove ${movie.title} from your watchlist?`}
@@ -46,12 +55,22 @@ function MovieCard({ movie, size }: IMovieCard) {
           >
             See Details
           </Link>
-          <button
-            className="mt-4 bg-red-600 hover:scale-105 duration-300 py-1 px-2 rounded-lg text-white cursor-pointer w-fit"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Remove From Watchlist
-          </button>
+          {user.isLoggedIn && !isSaved && (
+            <button
+              className="mt-4 bg-red-600 hover:scale-105 duration-300 py-1 px-2 rounded-lg text-white cursor-pointer w-fit"
+              onClick={() => user.id && addMovieToSaved(movie, user.id)}
+            >
+              Add To Watchlist
+            </button>
+          )}
+          {user.isLoggedIn && isSaved && (
+            <button
+              className="mt-4 bg-red-600 hover:scale-105 duration-300 py-1 px-2 rounded-lg text-white cursor-pointer w-fit"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Remove From Watchlist
+            </button>
+          )}
         </div>
         <div className={`p-2 ${isSmall ? "text-xs" : "p-4"}`}>
           <h3 className={`font-semibold ${isSmall ? "text-sm" : "text-xl"}`}>

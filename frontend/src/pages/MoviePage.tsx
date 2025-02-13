@@ -4,14 +4,16 @@ import Error from "../components/Error";
 import Spinner from "../components/Spinner";
 import StarRating from "../components/StarRating";
 import UserRatings from "../components/UserRatings";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ConfirmationModal from "../components/ConfirmationModal";
+import { AuthContext } from "../context/userContext";
 
 const MoviePage = () => {
   const { id } = useParams();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const { movie, error, isLoading } = useFetchMovie(id as string);
+  const { user, removeMovieFromSaved, addMovieToSaved } =
+    useContext(AuthContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (isLoading) {
     return <Spinner />;
@@ -20,9 +22,12 @@ const MoviePage = () => {
   if (error) {
     return <Error message={error} showReturnBtn={true} />;
   }
-  console.log(movie);
+  const isSaved = user.savedMovies.find(
+    (savedMovie) => savedMovie.id === movie?.id
+  );
 
   const trailerId = movie?.trailer.split("v=")[1].split("&")[0];
+
   return (
     movie && (
       <>
@@ -31,7 +36,7 @@ const MoviePage = () => {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             onConfirm={() => {
-              console.log("yes");
+              removeMovieFromSaved(id as string, user.id as string);
               setIsModalOpen(false);
             }}
             message={`Do you want to remove ${movie.title} from your watchlist?`}
@@ -58,15 +63,22 @@ const MoviePage = () => {
               </div>
 
               <div className="mt-4 flex justify-center sm:justify-start">
-                <button className="w-fit px-4 py-2 bg-amber-500 border hover:bg-green-600 text-black hover:text-white hover:scale-105 duration-300 rounded-xl cursor-pointer">
-                  Add To Watchlist
-                </button>
-                <button
-                  className="w-fit px-4 py-2 bg-amber-500 border hover:bg-green-600 text-black hover:text-white hover:scale-105 duration-300 rounded-xl cursor-pointer"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  Remove From Watchlist
-                </button>
+                {user.isLoggedIn && !isSaved && (
+                  <button
+                    className="w-fit px-4 py-2 bg-amber-500 border hover:bg-green-600 text-black hover:text-white hover:scale-105 duration-300 rounded-xl cursor-pointer"
+                    onClick={() => user.id && addMovieToSaved(movie, user.id)}
+                  >
+                    Add To Watchlist
+                  </button>
+                )}{" "}
+                {user.isLoggedIn && isSaved && (
+                  <button
+                    className="w-fit px-4 py-2 bg-amber-500 border hover:bg-green-600 text-black hover:text-white hover:scale-105 duration-300 rounded-xl cursor-pointer"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    Remove From Watchlist
+                  </button>
+                )}
               </div>
 
               <div className="mt-4">

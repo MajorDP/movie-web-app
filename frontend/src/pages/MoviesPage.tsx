@@ -19,7 +19,7 @@ const MoviesPage = () => {
         `http://localhost:5000/movies/filter?val1=${filters.searchValue}&val2=${filters.sortValue}`
       );
       const data = await res.json();
-      console.log(data);
+
       setMovies(data);
       setIsLoading(false);
     };
@@ -30,7 +30,6 @@ const MoviesPage = () => {
     return <Spinner />;
   }
 
-  console.log(filters);
   return (
     movies && (
       <section id="movies" className="py-16 px-4">
