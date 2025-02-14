@@ -19,6 +19,7 @@ interface IUser {
     img: string;
     title: string;
   }>;
+  email: string;
 }
 
 export const AuthContext = createContext<{
@@ -30,7 +31,7 @@ export const AuthContext = createContext<{
   setUser: React.Dispatch<SetStateAction<IUser>>;
   error: string | null;
 }>({
-  user: { id: null, isLoggedIn: false, savedMovies: [] },
+  user: { id: null, isLoggedIn: false, savedMovies: [], email: "" },
   login: async () => {},
   logout: () => {},
   removeMovieFromSaved: async () => {},
@@ -50,6 +51,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
           id: null,
           isLoggedIn: false,
           savedMovies: [],
+          email: "",
         }
   );
 
@@ -81,6 +83,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       JSON.stringify({
         id: data.id,
         isLoggedIn: data.isLoggedIn,
+        email: data.email,
         savedMovies: data.savedMovies,
       })
     );
@@ -93,6 +96,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       id: null,
       isLoggedIn: false,
       savedMovies: [],
+      email: "",
     });
 
     sessionStorage.removeItem("user");

@@ -10,7 +10,7 @@ function UserRatings({ reviews }: IUserRatings) {
   const { user } = useContext(AuthContext);
   return (
     <div className="w-full lg:w-[70%] m-auto">
-      <h3 className="text-2xl text-center pt-5">Reviews from other users</h3>
+      <h3 className="text-3xl text-center pt-5">Reviews from other users</h3>
       {reviews ? (
         reviews.map((review: Review, index: number) => (
           <ul className="flex flex-col gap-4 mt-5">

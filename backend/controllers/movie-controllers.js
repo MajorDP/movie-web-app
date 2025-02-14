@@ -49,6 +49,7 @@ const movies = [
     cast: ["Ryan Reynolds", "Hugh Jackman", "Morena Baccarin", "Emma Corrin"],
     language: "English",
     awards: ["MTV Movie Awards", "Golden Globe (nominated)"],
+    reviews: [],
   },
   {
     id: "4",
@@ -65,6 +66,18 @@ const movies = [
     cast: ["Ryan Reynolds", "Morena Baccarin", "T.J. Miller", "Ed Skrein"],
     language: "English",
     awards: ["Golden Globe (nominated)", "Teen Choice Award"],
+    reviews: [
+      {
+        id: "r1",
+        userId: "1",
+        rating: 3,
+        datePosted: "14.02.2025",
+        userEmail: "asura@abv.bg",
+        userImg:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKFem0b3QKwZNYgZ3eCClFlnIlIn5V1nDJjw&s",
+        comment: "Amazing movie.",
+      },
+    ],
   },
 ];
 
@@ -123,7 +136,23 @@ const getMovies = (req, res, next) => {
   res.json(sortedMovies);
 };
 
+const submitReview = (req, res, next) => {
+  const review = req.body.review;
+  const movieId = req.params.id;
+  console.log(movieId);
+  console.log(review);
+  if (!review) {
+    return next(new HttpError("No review found.", 404));
+  }
+
+  const foundMovie = movies.find((movie) => movie.id === movieId);
+  console.log(foundMovie);
+  console.log(foundMovie);
+  foundMovie.reviews.push(review);
+  res.json({ message: "works" });
+};
 exports.getFeaturedMovies = getFeaturedMovies;
 exports.getMovies = getMovies;
 exports.getMovie = getMovie;
 exports.getPopularMovies = getPopularMovies;
+exports.submitReview = submitReview;

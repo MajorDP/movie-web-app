@@ -34,6 +34,7 @@ const login = (req, res, next) => {
     id: foundUser.id,
     isLoggedIn: true,
     savedMovies: foundUser.savedMovies,
+    email: foundUser.email,
   });
 };
 
