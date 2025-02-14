@@ -1,6 +1,6 @@
 import { createContext, ReactNode, SetStateAction, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import IMovie from "../interfaces/movies";
+import { IMovie } from "../interfaces/movies";
 
 interface IAuthData {
   email: string;

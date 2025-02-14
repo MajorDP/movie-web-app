@@ -143,11 +143,13 @@ const MoviePage = () => {
               </div>
             </div>
           </div>
-          <div className="mt-10">
-            <StarRating currentRating={movie.rating} />
-          </div>
+          {user.isLoggedIn && (
+            <div className="mt-10">
+              <StarRating currentRating={movie.rating} />
+            </div>
+          )}
           <div className="mt-12">
-            <UserRatings />
+            <UserRatings reviews={movie.reviews} />
           </div>
         </div>
       </>

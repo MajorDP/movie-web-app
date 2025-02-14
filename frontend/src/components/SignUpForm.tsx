@@ -7,7 +7,6 @@ function SignUpForm() {
     password: "",
     repeatPassword: "",
   });
-  console.log(authData);
 
   return (
     <form className=" border px-10 py-4 rounded-xl">

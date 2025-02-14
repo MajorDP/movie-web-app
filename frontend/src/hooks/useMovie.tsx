@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import IMovie from "../interfaces/movies";
+import { IMovie } from "../interfaces/movies";
 
 export const useFetchMovie = (id: string) => {
   const [movieData, setMovieData] = useState<{

@@ -1,4 +1,4 @@
-export default interface IMovie {
+export interface IMovie {
   id: string;
   title: string;
   description: string;
@@ -12,4 +12,15 @@ export default interface IMovie {
   cast: string[];
   language: string;
   awards: string[];
+  reviews: Review[];
+}
+
+export interface Review {
+  id: string;
+  userId: string;
+  userEmail: string;
+  userImg: string;
+  rating: number;
+  datePosted: string;
+  comment: string;
 }

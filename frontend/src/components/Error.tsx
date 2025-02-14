@@ -5,6 +5,7 @@ interface IError {
   showReturnBtn?: boolean;
   returnBtnMessage?: string;
   returnBtnLink?: string;
+  errorMsgColor?: string;
 }
 
 export const Error = ({
@@ -12,10 +13,16 @@ export const Error = ({
   showReturnBtn,
   returnBtnMessage,
   returnBtnLink,
+  errorMsgColor,
 }: IError) => {
+  console.log(`text-${errorMsgColor}`);
   return (
     <div className="flex flex-col items-center justify-center">
-      <p className="text-red-300 font-semibold text-lg sm:text-2xl">
+      <p
+        className={`${
+          errorMsgColor === "primary" ? "text-red-300" : "text-white"
+        } font-semibold text-lg sm:text-2xl`}
+      >
         {message}
       </p>{" "}
       {showReturnBtn && (

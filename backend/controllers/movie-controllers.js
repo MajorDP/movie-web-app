@@ -21,6 +21,18 @@ const movies = [
     ],
     language: "English",
     awards: ["Oscar", "Golden Globe", "Screen Actors Guild Award"],
+    reviews: [
+      {
+        id: "r1",
+        userId: "1",
+        rating: 3,
+        datePosted: "14.02.2025",
+        userEmail: "asura@abv.bg",
+        userImg:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKFem0b3QKwZNYgZ3eCClFlnIlIn5V1nDJjw&s",
+        comment: "Not really my best choice.",
+      },
+    ],
   },
   {
     id: "3",
