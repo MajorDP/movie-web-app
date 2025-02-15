@@ -10,7 +10,7 @@ function LoginForm() {
   });
   const { login, error } = useContext(AuthContext);
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     await login(authData);
@@ -18,7 +18,7 @@ function LoginForm() {
   return (
     <form
       className="border px-10 py-4 rounded-xl"
-      onSubmit={(e) => onSubmit(e)}
+      onSubmit={(e) => handleSubmit(e)}
     >
       <h2 className="text-4xl text-center py-2">Sign In</h2>
       <div className="flex flex-col w-fit m-auto text-xl mt-10">

@@ -20,6 +20,35 @@ const mockUserData = [
   },
 ];
 
+const register = (req, res, next) => {
+  const { email, password, repeatPassword } = req.body;
+
+  if (password !== repeatPassword) {
+    return next(new HttpError("Passwords don't match."));
+  }
+
+  const foundUser = mockUserData.find((user) => user.email === email);
+
+  if (foundUser) {
+    return next(new HttpError("User with this email already exists.", 401));
+  }
+  const newUser = {
+    id: mockUserData.length + 1,
+    email,
+    password,
+    savedMovies: [],
+  };
+
+  mockUserData.push(newUser);
+
+  res.json({
+    id: newUser.id,
+    isLoggedIn: true,
+    savedMovies: newUser.savedMovies,
+    email: newUser.email,
+  });
+};
+
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
@@ -81,6 +110,7 @@ const removeSavedMovie = (req, res, next) => {
   });
 };
 
+exports.register = register;
 exports.login = login;
 exports.getUserMovies = getUserMovies;
 exports.removeSavedMovie = removeSavedMovie;

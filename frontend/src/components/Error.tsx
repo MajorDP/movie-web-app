@@ -15,7 +15,6 @@ export const Error = ({
   returnBtnLink,
   errorMsgColor,
 }: IError) => {
-  console.log(`text-${errorMsgColor}`);
   return (
     <div className="flex flex-col items-center justify-center">
       <p

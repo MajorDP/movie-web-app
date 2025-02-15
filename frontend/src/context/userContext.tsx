@@ -5,6 +5,7 @@ import { IMovie } from "../interfaces/movies";
 interface IAuthData {
   email: string;
   password: string;
+  repeatPassword?: string;
 }
 
 interface IAuthProviderProps {
@@ -25,6 +26,7 @@ interface IUser {
 export const AuthContext = createContext<{
   user: IUser;
   login: (authData: IAuthData) => Promise<void>;
+  register: (authData: IAuthData) => Promise<void>;
   logout: () => void;
   removeMovieFromSaved: (movieId: string, userId: string) => Promise<void>;
   addMovieToSaved: (movie: IMovie, userId: string) => Promise<void>;
@@ -33,6 +35,7 @@ export const AuthContext = createContext<{
 }>({
   user: { id: null, isLoggedIn: false, savedMovies: [], email: "" },
   login: async () => {},
+  register: async () => {},
   logout: () => {},
   removeMovieFromSaved: async () => {},
   addMovieToSaved: async () => {},
@@ -56,6 +59,42 @@ export function AuthProvider({ children }: IAuthProviderProps) {
   );
 
   const [error, setError] = useState<string | null>(null);
+
+  const register = async (authData: IAuthData): Promise<void> => {
+    console.log(authData);
+    const res = await fetch("http://localhost:5000/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: authData.email,
+        password: authData.password,
+        repeatPassword: authData.repeatPassword,
+      }),
+    });
+    if (!res.ok) {
+      const errorData = await res.json();
+      setError(errorData.message);
+      return;
+    }
+    const data = await res.json();
+
+    setUser(data);
+    setError(null);
+
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: data.id,
+        isLoggedIn: data.isLoggedIn,
+        email: data.email,
+        savedMovies: data.savedMovies,
+      })
+    );
+
+    navigate("/");
+  };
 
   const login = async (authData: IAuthData): Promise<void> => {
     const res = await fetch("http://localhost:5000/auth/login", {
@@ -169,6 +208,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       value={{
         user,
         logout,
+        register,
         login,
         error,
         setUser,
