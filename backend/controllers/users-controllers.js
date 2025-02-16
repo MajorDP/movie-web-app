@@ -1,112 +1,152 @@
 const HttpError = require("../models/HttpError");
+const User = require("../models/users");
 
-const mockUserData = [
-  {
-    id: "1",
-    email: "asura@abv.bg",
-    password: "123",
-    savedMovies: [
-      {
-        id: "3",
-        title: "Deadpool 3",
-        img: "https://m.media-amazon.com/images/M/MV5BZTk5ODY0MmQtMzA3Ni00NGY1LThiYzItZThiNjFiNDM4MTM3XkEyXkFqcGc@._V1_.jpg",
-      },
-      {
-        id: "1",
-        title: "Avengers: Endgame",
-        img: "https://lumiere-a.akamaihd.net/v1/images/au_marvel_avengersendgame_hero_m_f8ba68d1.jpeg?region=0,133,750,422",
-      },
-    ],
-  },
-];
-
-const register = (req, res, next) => {
+const register = async (req, res, next) => {
   const { email, password, repeatPassword } = req.body;
 
   if (password !== repeatPassword) {
     return next(new HttpError("Passwords don't match."));
   }
 
-  const foundUser = mockUserData.find((user) => user.email === email);
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email: email });
+  } catch (error) {
+    return next(new HttpError("Sign up failed, please try again later.", 500));
+  }
 
-  if (foundUser) {
+  if (existingUser) {
     return next(new HttpError("User with this email already exists.", 401));
   }
-  const newUser = {
-    id: mockUserData.length + 1,
+
+  const newUser = new User({
     email,
     password,
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKFem0b3QKwZNYgZ3eCClFlnIlIn5V1nDJjw&s",
     savedMovies: [],
-  };
+  });
 
-  mockUserData.push(newUser);
+  try {
+    newUser.save();
+  } catch (error) {
+    return next(new HttpError("Sign up failed, please try again later.", 500));
+  }
 
   res.json({
-    id: newUser.id,
+    ...newUser.toObject({ getters: true }),
     isLoggedIn: true,
-    savedMovies: newUser.savedMovies,
-    email: newUser.email,
   });
 };
 
-const login = (req, res, next) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
 
-  const foundUser = mockUserData.find(
-    (user) => user.email === email && user.password === password
-  );
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email: email });
+  } catch (error) {
+    return next(new HttpError("Sign in failed, please try again later.", 500));
+  }
 
-  if (!foundUser) {
+  if (!existingUser || existingUser.password !== password) {
     return next(new HttpError("Incorrect email or password.", 401));
   }
+
   res.json({
-    id: foundUser.id,
+    ...existingUser.toObject({ getters: true }),
     isLoggedIn: true,
-    savedMovies: foundUser.savedMovies,
-    email: foundUser.email,
   });
 };
 
-const getUserMovies = (req, res, next) => {
+const getUserMovies = async (req, res, next) => {
   const userId = req.params.id;
 
-  const user = mockUserData.find((user) => user.id === userId);
-
-  if (!user) {
-    return next(new HttpError("User could not be found.", 404));
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (error) {
+    return next(new HttpError("Sign in failed, please try again later.", 500));
   }
 
-  return res.json(user.savedMovies);
+  return res.json(
+    user.savedMovies.map((movie) => movie.toObject({ getters: true }))
+  );
 };
 
-const saveMovie = (req, res, next) => {
-  const movie = req.body.movie;
-  const userId = req.body.userId;
+const saveMovie = async (req, res, next) => {
+  const { movie, userId } = req.body;
 
-  console.log(movie);
-  const foundUser = mockUserData.find((user) => user.id === userId);
+  if (!movie || !userId) {
+    return next(new HttpError("Missing movie or user ID.", 400));
+  }
 
-  foundUser.savedMovies.unshift(movie);
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (error) {
+    return next(
+      new HttpError("Fetching user failed, please try again later.", 500)
+    );
+  }
+
+  if (!user) {
+    return next(new HttpError("User not found.", 404));
+  }
+
+  user.savedMovies.unshift(movie);
+
+  try {
+    await user.save();
+  } catch (error) {
+    console.log(error.message);
+    return next(new HttpError("Saving movie failed, please try again.", 500));
+  }
 
   return res.json({
-    message: "Movie Removed!",
-    savedMovies: foundUser.savedMovies,
+    message: "Movie Saved!",
+    savedMovies: user.savedMovies,
   });
 };
 
-const removeSavedMovie = (req, res, next) => {
-  const movieId = req.body.movieId;
-  const userId = req.body.userId;
+const removeSavedMovie = async (req, res, next) => {
+  const { movieId, userId } = req.body;
 
-  const foundUser = mockUserData.find((user) => user.id === userId);
+  if (!movieId || !userId) {
+    return next(new HttpError("Missing movie ID or user ID.", 400));
+  }
 
-  foundUser.savedMovies = foundUser.savedMovies.filter(
-    (movie) => movie.id !== movieId
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (error) {
+    return next(
+      new HttpError("Fetching user failed, please try again later.", 500)
+    );
+  }
+
+  if (!user) {
+    return next(new HttpError("User not found.", 404));
+  }
+
+  const initialLength = user.savedMovies.length;
+
+  user.savedMovies = user.savedMovies.filter(
+    (movie) => movie.movieId !== movieId
   );
+
+  if (user.savedMovies.length === initialLength) {
+    return next(new HttpError("Movie not found in saved list.", 404));
+  }
+
+  try {
+    await user.save();
+  } catch (error) {
+    return next(new HttpError("Removing movie failed, please try again.", 500));
+  }
 
   return res.json({
     message: "Movie Removed!",
-    savedMovies: foundUser.savedMovies,
+    savedMovies: user.savedMovies,
   });
 };
 

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import IMovie from "../interfaces/movies";
+import { IMovie } from "../interfaces/movies";
 import Spinner from "../components/Spinner";
 import MovieCard from "../components/MovieCard";
 import { AuthContext } from "../context/userContext";

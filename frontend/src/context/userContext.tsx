@@ -16,7 +16,7 @@ interface IUser {
   id: string | null;
   isLoggedIn: boolean;
   savedMovies: Array<{
-    id: string;
+    movieId: string;
     img: string;
     title: string;
   }>;
@@ -61,7 +61,6 @@ export function AuthProvider({ children }: IAuthProviderProps) {
   const [error, setError] = useState<string | null>(null);
 
   const register = async (authData: IAuthData): Promise<void> => {
-    console.log(authData);
     const res = await fetch("http://localhost:5000/auth/register", {
       method: "POST",
       headers: {
@@ -145,7 +144,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
 
   const addMovieToSaved = async (movie: IMovie, userId: string) => {
     const movieObj = {
-      id: movie.id,
+      movieId: movie.id,
       title: movie.title,
       img: movie.img,
     };
@@ -162,6 +161,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     });
 
     const data = await res.json();
+
     setUser((user) => {
       return { ...user, savedMovies: data.savedMovies };
     });
@@ -170,6 +170,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       "user",
       JSON.stringify({
         id: user.id,
+        email: user.email,
         isLoggedIn: user.isLoggedIn,
         savedMovies: data.savedMovies,
       })
@@ -189,6 +190,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     });
 
     const data = await res.json();
+
     setUser((user) => {
       return { ...user, savedMovies: data.savedMovies };
     });
@@ -197,6 +199,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       "user",
       JSON.stringify({
         id: user.id,
+        email: user.email,
         isLoggedIn: user.isLoggedIn,
         savedMovies: data.savedMovies,
       })

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
-import IMovie from "../interfaces/movies";
+import { IMovie } from "../interfaces/movies";
 import Spinner from "./Spinner";
 
 function PopularMovies() {

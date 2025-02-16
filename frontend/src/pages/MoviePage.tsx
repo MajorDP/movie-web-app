@@ -10,7 +10,9 @@ import { AuthContext } from "../context/userContext";
 
 const MoviePage = () => {
   const { id } = useParams();
+
   const { movie, error, isLoading } = useFetchMovie(id as string);
+
   const { user, removeMovieFromSaved, addMovieToSaved } =
     useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +25,7 @@ const MoviePage = () => {
     return <Error message={error} showReturnBtn={true} />;
   }
   const isSaved = user.savedMovies.find(
-    (savedMovie) => savedMovie.id === movie?.id
+    (savedMovie) => savedMovie.movieId === movie?.id
   );
 
   const trailerId = movie?.trailer.split("v=")[1].split("&")[0];

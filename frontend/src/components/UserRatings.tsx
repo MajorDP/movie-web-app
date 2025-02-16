@@ -6,6 +6,7 @@ import { AuthContext } from "../context/userContext";
 interface IUserRatings {
   reviews: Review[];
 }
+
 function UserRatings({ reviews }: IUserRatings) {
   const { user } = useContext(AuthContext);
   return (

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import IMovie from "../interfaces/movies";
+import { IMovie } from "../interfaces/movies";
 import { useContext, useState } from "react";
 import ConfirmationModal from "./ConfirmationModal";
 import { AuthContext } from "../context/userContext";
@@ -16,7 +16,8 @@ function MovieCard({ movie, size }: IMovieCard) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const isSaved = user.savedMovies.find(
-    (savedMovie) => savedMovie.id === movie.id
+    (savedMovie) =>
+      savedMovie.movieId === movie.id || savedMovie.movieId === movie.movieId
   );
 
   return (
@@ -27,7 +28,7 @@ function MovieCard({ movie, size }: IMovieCard) {
           onClose={() => setIsModalOpen(false)}
           onConfirm={() => {
             if (user.id) {
-              removeMovieFromSaved(movie.id, user.id);
+              removeMovieFromSaved(movie.movieId || movie.id, user.id);
             }
             setIsModalOpen(false);
           }}
@@ -50,7 +51,7 @@ function MovieCard({ movie, size }: IMovieCard) {
           }`}
         >
           <Link
-            to={`/movies/${movie.id}`}
+            to={`/movies/${movie.movieId || movie.id}`}
             className="bg-green-600 hover:scale-105 duration-300 py-1 px-2 rounded-lg text-white "
           >
             See Details

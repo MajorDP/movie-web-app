@@ -1,4 +1,5 @@
 const HttpError = require("../models/HttpError");
+const Movie = require("../models/movies");
 
 const movies = [
   {
@@ -81,33 +82,114 @@ const movies = [
   },
 ];
 
-const getFeaturedMovies = (req, res, next) => {
-  res.json(movies.slice(0, 3));
+const postMovie = async (req, res, next) => {
+  try {
+    const {
+      id,
+      title,
+      description,
+      img,
+      trailer,
+      releaseDate,
+      genres,
+      duration,
+      rating,
+      director,
+      cast,
+      language,
+      awards,
+      reviews,
+    } = req.body;
+
+    // Creating a new movie document
+    const newMovie = new Movie({
+      id,
+      title,
+      description,
+      img,
+      trailer,
+      releaseDate, // Ensure frontend sends date in ISO format: YYYY-MM-DD
+      genres,
+      duration,
+      rating,
+      director,
+      cast,
+      language,
+      awards,
+      reviews,
+    });
+
+    // Save to database
+    const savedMovie = await newMovie.save();
+
+    res.status(201).json(savedMovie);
+  } catch (err) {
+    const error = new HttpError("Couldn't get movies.", 500);
+    return next(error);
+  }
 };
 
-const getMovie = (req, res, next) => {
+const getFeaturedMovies = async (req, res, next) => {
+  let movies;
+  try {
+    movies = await Movie.find();
+  } catch (err) {
+    const error = new HttpError("Couldn't get movies.", 500);
+    return next(error);
+  }
+  res.json(movies.slice(-3));
+};
+const getMovie = async (req, res, next) => {
   const id = req.params.id;
 
-  const movie = movies.find((movie) => movie.id === id);
-  if (!movie) {
-    return next(new HttpError("Movie could not be could.", 404));
+  let movie;
+  try {
+    movie = await Movie.findById(id);
+  } catch (err) {
+    const error = new HttpError("Couldn't get movie.", 500);
+    return next(error);
   }
 
-  res.json(movie);
+  if (!movie) {
+    return next(new HttpError("Movie could not be found.", 404));
+  }
+
+  const movieObj = movie.toObject({ getters: true });
+
+  movieObj.id = movieObj._id;
+  delete movieObj._id;
+
+  res.json(movieObj);
 };
 
-const getPopularMovies = (req, res, next) => {
+const getPopularMovies = async (req, res, next) => {
+  let movies;
+  try {
+    movies = await Movie.find();
+  } catch (err) {
+    const error = new HttpError("Couldn't get movies.", 500);
+    return next(error);
+  }
+
   const sortedMovies = movies.sort((a, b) => b.rating - a.rating).slice(0, 3);
   if (!sortedMovies) {
-    return next(new HttpError("Movie could not be could.", 404));
+    return next(new HttpError("Movies could not be found.", 404));
   }
 
-  res.json(sortedMovies);
+  res.json(sortedMovies.map((movie) => movie.toObject({ getters: true })));
 };
 
-const getMovies = (req, res, next) => {
+const getMovies = async (req, res, next) => {
   const searchValue = req.query.val1 || "";
   const sortValue = req.query.val2 || "";
+
+  let movies;
+  try {
+    movies = await Movie.find();
+  } catch (err) {
+    const error = new HttpError("Couldn't get movies.", 500);
+    return next(error);
+  }
 
   const [type, value] = sortValue.split("-");
   const filteredMovies =
@@ -133,22 +215,34 @@ const getMovies = (req, res, next) => {
         })
       : filteredMovies;
 
-  res.json(sortedMovies);
+  res.json(sortedMovies.map((movie) => movie.toObject({ getters: true })));
 };
 
-const submitReview = (req, res, next) => {
+const submitReview = async (req, res, next) => {
   const review = req.body.review;
   const movieId = req.params.id;
-  console.log(movieId);
-  console.log(review);
+
   if (!review) {
     return next(new HttpError("No review found.", 404));
   }
 
-  const foundMovie = movies.find((movie) => movie.id === movieId);
-  console.log(foundMovie);
-  console.log(foundMovie);
-  foundMovie.reviews.push(review);
+  let movie;
+  try {
+    movie = await Movie.findById(movieId);
+  } catch (err) {
+    const error = new HttpError("Couldn't get movie.", 500);
+    return next(error);
+  }
+
+  movie.reviews.unshift(review);
+
+  try {
+    movie.save();
+  } catch (err) {
+    const error = new HttpError("Couldn't save review.", 500);
+    return next(error);
+  }
+
   res.json({ message: "works" });
 };
 exports.getFeaturedMovies = getFeaturedMovies;
@@ -156,3 +250,4 @@ exports.getMovies = getMovies;
 exports.getMovie = getMovie;
 exports.getPopularMovies = getPopularMovies;
 exports.submitReview = submitReview;
+exports.postMovie = postMovie;

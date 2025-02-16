@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-
+const mongoose = require("mongoose");
 const moviesRouter = require("./routes/movie-routes");
 const usersRouter = require("./routes/users-routes");
 
@@ -19,4 +19,12 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || "An unknown error occured." });
 });
 
-app.listen(5000);
+mongoose
+  .connect(
+    `mongodb+srv://pavelMovies:7539518462@movies-cluster.nxhil.mongodb.net/?retryWrites=true&w=majority&appName=Movies-Cluster`
+  )
+  .then(() => {
+    console.log("yes");
+    app.listen(5000);
+  })
+  .catch((err) => console.log("connection failed"));

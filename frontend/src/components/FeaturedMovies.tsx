@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import IMovie from "../interfaces/movies";
+import { IMovie } from "../interfaces/movies";
 import Spinner from "./Spinner";
 
 function FeaturedMovies() {

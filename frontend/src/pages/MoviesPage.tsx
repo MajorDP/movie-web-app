@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import IMovie from "../interfaces/movies";
+import { IMovie } from "../interfaces/movies";
 import Spinner from "../components/Spinner";
 import MovieCard from "../components/MovieCard";
 import Error from "../components/Error";
@@ -30,6 +30,7 @@ const MoviesPage = () => {
     return <Spinner />;
   }
 
+  console.log(movies);
   return (
     movies && (
       <section id="movies" className="py-16 px-4">

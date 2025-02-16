@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../context/userContext";
 
 interface IStarRating {
@@ -14,7 +14,7 @@ const StarRating = ({ currentRating, movieId }: IStarRating) => {
   const [hover, setHover] = useState(0);
   const [value, setValue] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const review = {
       userId: user.id,
@@ -42,8 +42,6 @@ const StarRating = ({ currentRating, movieId }: IStarRating) => {
     } else {
       window.location.reload();
     }
-    const data = await res.json();
-    console.log(data);
   };
   return (
     <form className="w-full flex flex-col" onSubmit={handleSubmit}>
