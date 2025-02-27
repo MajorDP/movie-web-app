@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const moviesRouter = require("./routes/movie-routes");
 const usersRouter = require("./routes/users-routes");
+require("dotenv").config();
 
 const app = express();
 
@@ -20,11 +21,9 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(
-    `mongodb+srv://pavelMovies:7539518462@movies-cluster.nxhil.mongodb.net/?retryWrites=true&w=majority&appName=Movies-Cluster`
-  )
+  .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log("yes");
-    app.listen(5000);
+    console.log("Connected to DB successfully");
+    app.listen(process.env.PORT);
   })
-  .catch((err) => console.log("connection failed"));
+  .catch((err) => console.log("no"));

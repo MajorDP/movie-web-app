@@ -85,7 +85,6 @@ const movies = [
 const postMovie = async (req, res, next) => {
   try {
     const {
-      id,
       title,
       description,
       img,
@@ -103,7 +102,6 @@ const postMovie = async (req, res, next) => {
 
     // Creating a new movie document
     const newMovie = new Movie({
-      id,
       title,
       description,
       img,
@@ -118,6 +116,7 @@ const postMovie = async (req, res, next) => {
       awards,
       reviews,
     });
+    console.log(newMovie);
 
     // Save to database
     const savedMovie = await newMovie.save();

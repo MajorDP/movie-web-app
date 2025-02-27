@@ -30,7 +30,6 @@ const MoviesPage = () => {
     return <Spinner />;
   }
 
-  console.log(movies);
   return (
     movies && (
       <section id="movies" className="py-16 px-4">
