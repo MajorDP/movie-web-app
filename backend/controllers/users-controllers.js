@@ -1,5 +1,7 @@
 const HttpError = require("../models/HttpError");
 const User = require("../models/users");
+const bcrypt = require("bcrypt");
+require("dotenv").config();
 
 const register = async (req, res, next) => {
   const { email, password, repeatPassword } = req.body;
@@ -19,9 +21,10 @@ const register = async (req, res, next) => {
     return next(new HttpError("User with this email already exists.", 401));
   }
 
+  const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = new User({
     email,
-    password,
+    password: hashedPassword,
     img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKFem0b3QKwZNYgZ3eCClFlnIlIn5V1nDJjw&s",
     savedMovies: [],
   });
@@ -48,7 +51,9 @@ const login = async (req, res, next) => {
     return next(new HttpError("Sign in failed, please try again later.", 500));
   }
 
-  if (!existingUser || existingUser.password !== password) {
+  const isMatch = await bcrypt.compare(password, existingUser.password);
+
+  if (!existingUser || !isMatch) {
     return next(new HttpError("Incorrect email or password.", 401));
   }
 
